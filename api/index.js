@@ -1,8 +1,11 @@
 // reuqire the express module
 const express = require('express');
+//reurie jwt
+const jwt = require('jsonwebtoken');
 // create an express app
 const app = express();
 app.use(express.json()); // to parse JSON bodies if we dont use this we cannot send any request on body in postman
+
 
 const users=[
     {
@@ -27,6 +30,18 @@ app.post('/api/login', (req, res) => {
     const user=users.find(u=>{
         return u.username===username && u.password===password;
     })
+    if(user){
+       //generate access token
+       const accessToken=jwt.sign({id:user.id, isAdmin:user.isAdmin}, "mysecretkey")
+       res.json({
+          username: user.username,
+            isAdmin: user.isAdmin,
+           accessToken
+       });
+    }
+    else{
+        res.status(401).json({message: 'Invalid username or password'});
+    }
    
 });
 // listen
