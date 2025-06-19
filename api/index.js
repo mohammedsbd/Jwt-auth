@@ -2,9 +2,9 @@
 const express = require('express');
 // create an express app
 const app = express();
-app.use(express.json()); // to parse JSON bodies
+app.use(express.json()); // to parse JSON bodies if we dont use this we cannot send any request on body in postman
 
-const user=[
+const users=[
     {
         id:1,
         username: 'John Doe',
@@ -24,6 +24,9 @@ const user=[
 //post to api/login
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
+    const user=users.find(u=>{
+        return u.username===username && u.password===password;
+    })
    
 });
 // listen
