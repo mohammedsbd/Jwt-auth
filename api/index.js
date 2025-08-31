@@ -529,6 +529,47 @@ app.listen(port, () => {
     }
     else{
         res.status(401).json({message: 'Invalid username or password'});
+        isAdmin: false,
+      
+    }
+]
+//post to api/login
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    const user=users.find(u=>{
+        return u.username===username && u.password===password;
+    })
+    if(user){
+       //generate access token
+       const accessToken=jwt.sign({id:user.id, isAdmin:user.isAdmin}, "mysecretkey")
+       res.json({
+          username: user.username,
+            isAdmin: user.isAdmin,
+           accessToken
+       });
+    }
+    else{
+        res.status(401).json({message: 'Invalid username or password'});
+    }
+   
+});
+// listen
+const port = 5050;
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
+    })
+    if(user){
+       //generate access token
+       const accessToken=jwt.sign({id:user.id, isAdmin:user.isAdmin}, "mysecretkey")
+       res.json({
+          username: user.username,
+            isAdmin: user.isAdmin,
+           accessToken
+       });
+    }
+    else{
+        res.status(401).json({message: 'Invalid username or password'});
     }
    
 });
